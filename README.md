@@ -8,7 +8,7 @@
 #### Major changes from v1.0
  * Added support for database storage.
  * Added ETL methods for transforming data storage formats (CSV->database, database->CSV).
- * Added new GET /data/timestamp to get the timestamp of last CVE data update. 
+ * Added new **GET /data/timestamp** to get the timestamp of last CVE data update. 
 
 --- 
 ## Summary
