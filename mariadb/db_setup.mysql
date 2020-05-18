@@ -1,0 +1,26 @@
+##
+## Creation of Vespa database and user accounts
+##
+
+DROP DATABASE IF EXISTS vespa;
+CREATE DATABASE vespa;
+
+## Due to mysql bug in some versions you may need to DROP users and flush first
+DROP user  IF EXISTS 'vespa_ro'@'%';
+DROP user  IF EXISTS 'vespa_rw'@'%';
+DROP user  IF EXISTS 'vespa_admin'@'%';
+FLUSH PRIVILEGES;
+
+# read-only user for the Flask app
+CREATE USER 'vespa_ro'@'%' IDENTIFIED BY '!Vespa_RO!';
+GRANT SELECT ON vespa.* TO 'vespa_ro'@'%';
+
+# read-write user for manual ETL functions - loading/updating data from CSV, etc.
+CREATE USER 'vespa_rw'@'%' IDENTIFIED BY '!Vespa_RW!';
+GRANT SELECT, INSERT, UPDATE, DROP ON vespa.* TO 'vespa_rw'@'%';
+
+# create/drop user for database table create/drop
+CREATE USER 'vespa_admin'@'%' IDENTIFIED BY '!Vespa_AD!';
+GRANT ALL ON vespa.* TO 'vespa_admin'@'%';
+
+FLUSH PRIVILEGES;
