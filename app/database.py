@@ -85,18 +85,8 @@ def create_db_engine(db_args):
     'database':   db_args['database']
   }
 
-#  print(">>>>>>>>>>>>>>>%s" % URI_PARAMS)
-
   engine = create_engine(URL(**URI_PARAMS))
   
-#  port = PORT
-#  username = db_args['username']
-#  password = db_args['password']
-#  host = db_args['host']
-#  database = db_args['database']
-#  uri = "%s://%s:%s@%s:%d/%s" % (DRIVER, username, password, host, port, database)
-#  engine = create_engine(uri)
-
   return(engine)
 
 ##-----------------------------------------------------------------------------------------
@@ -147,16 +137,12 @@ def create_session(engine):
   """
   tag = "%s.create_session" % myname
 
-  session = None
+  db_session = None
 
-#  try:
-#    Base.metadata.bind = engine
-#    DBSession = sessionmaker(bind=engine)
-#    session = DBSession()
-#  except Exception as e:
-#    raise
-
-  db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+  try:
+    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+  except Exception as e:
+    raise
 
   return(db_session)
  
@@ -291,15 +277,13 @@ if __name__ == '__main__':
     csv_path_out = "csv_data/csv_new.csv"
 
     username = "vespa_rw"
-    password = '!Vespa_RW!'
+    password = '******'
 
     table_name = CveRecord.__table__
 
 #    print("%s: Importing CSV data from file (%s) to database table (%s)..." % (myname, csv_path_in, table_name))
 #    out = csv_to_sql(csv_path_in, username=username, password=password)
-#    print("OUTPUT: %s" % out)
 
     print("%s: Exporting CVE data from database table (%s) to file (%s)..." % (myname, table_name, csv_path_out))
     out = sql_to_csv(csv_path_out, username=username, password=password)
-    print("OUTPUT: %s" % out)
   
