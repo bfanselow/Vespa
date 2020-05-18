@@ -32,5 +32,13 @@ This will drop/create the database name, **vespa**, and create a *read-only* and
 ```
  (venv) $ cd app
  (venv) $ python -c 'import database; database.csv_to_sql(csv_filepath, username="vespa_rw", password="*****")'
+>> TRUNCATING TABLE: cve_records
+>> INSERTING: ['CVE-2020-0001', 'freeciv', '1.0.9', '1.1.1']
+>> INSERTING: ['CVE-2020-0002', 'osquery', '0.8', '1.0']
+>> INSERTING: ['CVE-2020-0003', 'freeciv', '1.1.2', '1.1.3']
+>> INSERTING: ['CVE-2020-0004', 'photoshop', '2.0.9', '2.1.2']
+>> INSERTING: ['CVE-2020-0005', 'flash', '0.0.1', '999.0']
+>> INSERTING: ['CVE-2020-0006', 'pytwitter', '0.1.0', '0.1.2']
+>> INSERTING: ['CVE-2020-0007', 'mint-linux', '2016.10', '2020.04']
 ```
 
