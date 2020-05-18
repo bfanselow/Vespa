@@ -40,7 +40,6 @@ def test_query_cve_data():
     """ 
      Test query for CVE record from CSV file
     """
-    package_name = "photoshop" 
     cve_dh = cda.create_cve_dh(storage_type, init_args) 
     result = cve_dh.get_cve_data_for_package(sample_query_package) 
     assert isinstance(result, list) == True 
