@@ -15,7 +15,7 @@ Once the mysql/maria DB is installed and running, the following three setup task
  2) Create the "cve_records" table
  3) Import data from cve.csv file to "cve_records" table
 
-**1) Create database and users**
+**1) Create database and users**   
 First, edit mariadb/db_setup.mysql to add password strings, then execute:
 ```
  $ sudo mysql -p < mariadb/db_setup.mysql
