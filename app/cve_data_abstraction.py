@@ -37,6 +37,7 @@ import sys
 import abc
 import time
 from sqlalchemy import func
+from sqlalchemy.orm import class_mapper
 
 ## database model handling 
 import database
@@ -108,7 +109,9 @@ class CveDH(abc.ABC):
     self.cname = self.__class__.__name__
     self.DEBUG = DEBUG
     
-    self.storage_type = d_init_args['storage_type'] 
+    self.storage_type = d_init_args.get('storage_type', None)
+    if not self.storage_type:
+      raise InitError("%s: Missing required init() parameter: [storage_type]" % (self.cname))
     
     self.logger = None 
     if 'logger' in d_init_args: 
@@ -422,7 +425,16 @@ class CveDH_Database(CveDH):
     result = self.session.query(database.CveRecord).filter_by(package=package_name).all() 
 
     self.session.close()
-    cve_records = [record.__dict__ for record in result]
+
+#    cve_records = [record.__dict__ for record in result]
+
+    cve_records = []
+    for record in result:
+      d_rec = record.__dict__
+      d_rec.pop('_sa_instance_state')
+      d_rec.pop('ts_inserted')
+      d_rec.pop('id')
+      cve_records.append(d_rec) 
 
     return(cve_records)
 
