@@ -115,6 +115,7 @@ The *VESPA* Flask app routing engine passes the Posted "package-version-host" li
 *VESPA* currently supports multiple different CVE data storage formats:
   * CSV file
   * Local or remote database    
+
 Future versions:
   * Yaml, API, etc. 
 
