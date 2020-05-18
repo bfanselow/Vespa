@@ -116,8 +116,7 @@ The *VESPA* Flask app routing engine passes the Posted "package-version-host" li
   * CSV file
   * Local or remote database    
 
-Future versions:
-  * Yaml, API, etc. 
+Future versions could include Yaml, remote-API, etc. 
 
 #### Storage Access
 *VESPA* accesses stored CVE data via a data-absraction-layer (CVE-data-handler) which provides the flexibility for storing the CVE data in different storage formats while using a single set of common data-access methods independent of the choice of storage format. This abstraction-layer also gives flexibility on how we load and query the data. For CSV file storage we can configure the data-handler to refresh the data on every query, or load it once into app memory upon app initialization and make queries to in-memory objects. Obviously, there are PROS/CONS to each option as discussed in **app/cve_data_abstraction.py**. Optimal performance can be achieved by using a database format (especially as the number of CVE records grows).
