@@ -41,7 +41,7 @@
 ```
 
 ### Database setup (if using database storage)
- 1) See **mariadb/README** for information on mysql install, and creating the database, *Vespa* db-users, and tables.
+ 1) See **mariadb/README** for information on mysql install, creating the database, *Vespa* db-users, table, and importing data from csv-file.
  2) Configure all database parameters in **app.config.STORAGE_ARGS['database']** used in STEP 1.
 
 
