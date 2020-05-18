@@ -201,4 +201,4 @@ Multiple executions of **./vespa_batch_run.sh -v file=example_post_data.json** w
 ```
 STATS: lines-processed: 100 example_post_data.json.  Start: Mon May 18 21:33:58 UTC 2020   End: Mon May 18 21:34:00 UTC 2020
 ```
-While this is not much better than the CSV file processing, I would expect the database storage to outperform the file storage when the number of CVE records gets very large - I would expect that the Pandas-based file-load and query (df.loc[df['package'] == package_name]) will eventually lag compared to ORM queries. 
+While this is not much better than the CSV file processing, I would expect the database storage to outperform the file storage when the number of CVE records gets very large - I would expect that the Pandas-based file-load and query will eventually lag compared to ORM queries: *(df.loc[df['package'] == package_name])* 
