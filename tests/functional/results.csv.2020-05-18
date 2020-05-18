@@ -1,0 +1,64 @@
+Invalid URI
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/vulnerable
+{"error":{"message":"Requested URL (http://127.0.0.1:8080/vespa/vulnerable) not supported"}}
+
+No API-key
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh
+{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed: no api-key in payload or headers","timestamp":"2020-05-18 17:40:55"}}
+
+Invalid API-key keyname
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'API-KEY: William.Fanselow.Vespa.1.0'
+{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed: no api-key in payload or headers","timestamp":"2020-05-18 17:40:55"}}
+
+Invalid API-key value
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.1.0.bad'
+{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed - Invalid API-Key: (William.Fanselow.Vespa.1.0.bad)","timestamp":"2020-05-18 17:40:55"}}
+
+Valid API-key value
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.1.0'
+{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed - Invalid API-Key: (William.Fanselow.Vespa.1.0)","timestamp":"2020-05-18 17:40:55"}}
+
+Valid Timestamp response
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/timestamp
+{"last_update":"2020-05-16 11:51:10","storage_type":"csv"}
+
+No payload
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln
+{"error":{"exception":"MethodNotAllowed","message":"405 Method Not Allowed: The method is not allowed for the requested URL.","timestamp":"2020-05-18 17:40:55"}}
+
+Empty payload
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{}'
+{"error":{"exception":"KeyError","message":"'data'","timestamp":"2020-05-18 17:40:55"}}
+
+Bogus payload 1
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"foo":"bar"}'
+{"error":{"exception":"KeyError","message":"'data'","timestamp":"2020-05-18 17:40:55"}}
+
+Bogus payload 2 (missing host)
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"package":"pip", "version":"19.1" }]}'
+{"error":{"exception":"ApiDataError","message":"Invalid request payload: data.0: 'host' is a required property","timestamp":"2020-05-18 17:40:55"}}
+
+Bogus payload 3 (missing version)
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"package":"pip", "host":"myhost" }]}'
+{"error":{"exception":"ApiDataError","message":"Invalid request payload: data.0: 'version' is a required property","timestamp":"2020-05-18 17:40:55"}}
+
+Bogus payload 4 (missing package)
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"version":"1.0", "host":"myhost" }]}'
+{"error":{"exception":"ApiDataError","message":"Invalid request payload: data.0: 'package' is a required property","timestamp":"2020-05-18 17:40:55"}}
+
+Valid payload with no affected packages
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"host":"foobar", "package":"pip", "version":"19.1" }]}'
+{}
+
+Valid payload parameters with additional parameters
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"date": "2020-05-14", "package": "freeciv", "version": "1.1.2", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}]}'
+{"74d2d85b57664f819ccea15b57fed5c0.example.org":["CVE-2020-0003"]}
+
+Valid payload single object with affected packages
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"package": "freeciv", "version": "1.1.2", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}]}'
+{"74d2d85b57664f819ccea15b57fed5c0.example.org":["CVE-2020-0003"]}
+
+Valid payload single object with affected packages
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{ "data": [{"package": "freeciv", "version": "1.1.2", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}, {"package": "photoshop", "version": "2.1.1", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}, {"package": "freeciv", "version": "1.0.9", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}, {"package": "flash", "version": "78.3.9", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}, {"package": "mint-linux", "version": "2015.2.0", "host": "74d2d85b57664f819ccea15b57fed5c0.example.org"}]}'
+{"74d2d85b57664f819ccea15b57fed5c0.example.org":["CVE-2020-0003","CVE-2020-0004","CVE-2020-0001","CVE-2020-0005"]}
+
