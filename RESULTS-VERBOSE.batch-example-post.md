@@ -1,4 +1,4 @@
-#### Results from ./vespa_batch_run.sh -v file=example_post_data.json
+#### (VERBOSE) Results from ./vespa_batch_run.sh -v file=example_post_data.json
 ---
 ```
 /usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/vuln -d '{"data": [{"package": "freeciv", "version": "1.7.0", "host": "2b09375594f9499698a39749ec773c3f.example.org"}, {"package": "mint-linux", "version": "2012.6.0", "host": "2b09375594f9499698a39749ec773c3f.example.org"}, {"package": "osquery", "version": "2.7.5", "host": "2b09375594f9499698a39749ec773c3f.example.org"}]}'
