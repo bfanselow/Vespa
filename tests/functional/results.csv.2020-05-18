@@ -7,16 +7,16 @@ No API-key
 {"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed: no api-key in payload or headers","timestamp":"2020-05-18 17:40:55"}}
 
 Invalid API-key keyname
-/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'API-KEY: William.Fanselow.Vespa.1.0'
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'API-KEY: William.Fanselow.Vespa.2.0'
 {"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed: no api-key in payload or headers","timestamp":"2020-05-18 17:40:55"}}
 
 Invalid API-key value
-/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.1.0.bad'
-{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed - Invalid API-Key: (William.Fanselow.Vespa.1.0.bad)","timestamp":"2020-05-18 17:40:55"}}
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.2.0.bad'
+{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed - Invalid API-Key: (William.Fanselow.Vespa.2.0.bad)","timestamp":"2020-05-18 17:40:55"}}
 
 Valid API-key value
-/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.1.0'
-{"error":{"exception":"ApiAuthorizationError","message":"API request authorization failed - Invalid API-Key: (William.Fanselow.Vespa.1.0)","timestamp":"2020-05-18 17:40:55"}}
+/usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H 'X-Api-Key: William.Fanselow.Vespa.2.0'
+{"status":true}
 
 Valid Timestamp response
 /usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/timestamp

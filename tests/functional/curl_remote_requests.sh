@@ -33,7 +33,7 @@ VESPA_VULN_URI="${VESPA_BASE_URI}/api/${VERSION}/vuln"
 
 VESPA_INVALID_URI="${VESPA_BASE_URI}/vulnerable"
 
-APIKEY='William.Fanselow.Vespa.1.0'
+APIKEY='William.Fanselow.Vespa.2.0'
 BAD_APIKEY='William.Fanselow.Vespa.1.0.bad'
 #################################################################
 
