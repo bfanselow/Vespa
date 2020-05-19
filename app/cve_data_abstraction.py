@@ -426,29 +426,19 @@ class CveDH_Database(CveDH):
 
     self.session.close()
 
-#    cve_records = [record.__dict__ for record in result]
-
-    cve_records = []
-    for record in result:
-      d_rec = record.__dict__
-      d_rec.pop('_sa_instance_state')
-      d_rec.pop('ts_inserted')
-      d_rec.pop('id')
-      cve_records.append(d_rec) 
+    ## rec_formatter() gives us a dict representation of specific cols in record
+    cve_records = [record.rec_formatter() for record in result]
 
     return(cve_records)
 
  
 ##----------------------------------------------------------------------------------------------
-## CveDH_API
+## Placeholder for other formats 
 ##----------------------------------------------------------------------------------------------
-#class CveDH_API(CveDH):
-#  """ 
-#   CVE data-handler for remote-api storage.
-#   Placeholder - currently not in use 
-#  """ 
+#class CveDH_Yaml(CveDH):
 #  pass
-#
+#class CveDH_API(CveDH):
+#  pass
 ##----------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
