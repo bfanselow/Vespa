@@ -72,7 +72,7 @@ def test_invalid_data_refresh_method(test_client):
     assert response.status_code == 405
 
 ##----------------------------------------
-def test_invalid_data_timestamp(test_client):
+def test_valid_data_timestamp(test_client):
     """
      Check proper handling/response of /data/timestamp 
     """

@@ -8,6 +8,7 @@
 import sys
 import pytest
 import pandas as pd
+import datetime
 import sqlalchemy
 
 sys.path.append('app')
@@ -42,6 +43,17 @@ def test_cve_dh_create():
     init_args = db_args 
     cve_dh = cda.create_cve_dh(storage_type, init_args) 
     assert isinstance(cve_dh, cda.CveDH) == True 
+
+##--------------------------------------
+def test_data_timestamp():
+    """
+     Test retrieval of the data timestamp 
+    """
+    cve_dh = cda.create_cve_dh(storage_type, db_args)
+    result = cve_dh.data_timestamp()
+    format = cda.TIMESTAMP_FORMAT
+    dt_obj = datetime.datetime.strptime(result, format)
+    assert isinstance(dt_obj, datetime.datetime) == True
 
 ##--------------------------------------
 def test_query_cve_data():
