@@ -40,7 +40,7 @@
  (venv) $ pip install -r requirements.txt
 ```
 
-### Database setup (if using database storage)
+### Database setup (only needed if using database storage)
  1) See **mariadb/README** for information on mysql install, creating the database, *Vespa* db-users, table, and importing data from csv-file.
  2) Configure all database parameters in **app.config.STORAGE_ARGS['database']** used in STEP 1.
  
