@@ -20,7 +20,7 @@ First, edit mariadb/db_setup.mysql to add password strings, then execute:
 ```
  $ sudo mysql -p < mariadb/db_setup.mysql
 ```
-This will drop/create the database name, **vespa**, and create a *read-only* and *read-write* user with appropirate access rights to the Vespa db tables. This will **NOT** create the tables - this is done separately using the CveRecord() model defined in database.py module as we want this CveRecord() model to be the single source of schema definition.
+This will drop/create the **"vespa"** database, and create a *read-only* and *read-write* user with appropirate access rights to the Vespa db tables. This will **NOT** create the tables - this is done separately using the CveRecord() model defined in database.py module as we want this CveRecord() model to be the single source of schema definition.
 
 **2) Create the tables (from python vertual-env)**
 ```
