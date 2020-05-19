@@ -3,23 +3,20 @@
   Module: database
 
   Description: 
-    Defines the CveRecord() model class for SqlAlchemy (table="cve_records).
+    Defines the CveRecord() model class for SqlAlchemy (table="cve_records), and some
+    DB connection-initialization methods. 
 
     Also defines some "out-of-band" functions that are not used by the Flask service, but
     accessed manually (from venv command-line) to manage CVE data. 
-
     * create_tables()
-      Used to create the "cve_records" table from the (venv) command-line:
-      (venv) $ python -c 'import database; database.create_tables(username="vespa_admin", password="*****")'
-
+        Used to create the "cve_records" table from the (venv) command-line during app-setup:
+        (venv) $ python -c 'import database; database.create_tables(username="vespa_admin", password="****")'
     * csv_to_sql()
-      Used to bulk load the CVE records from a CSV file into the "cve_records" table:
-      (venv) $ python -c 'import database; database.csv_to_sql(csv_filepath, username="vespa_rw", password="*****")'
-    
+        Used to bulk load the CVE records from a CSV file into the "cve_records" table:
+        (venv) $ python -c 'import database; database.csv_to_sql(csv_filepath, username="vespa_rw", password="****")'
     * sql_to_csv()
-      Used to create a CSV file from all CVE records in the "cve_records" table:
-      (venv) $ python -c 'import database; database.sql_to_csv(csv_filepath, username="vespa_rw", password="*****")'
-
+        Used to create a CSV file from all CVE records in the "cve_records" table:
+        (venv) $ python -c 'import database; database.sql_to_csv(csv_filepath, username="vespa_ro", password="***")'
 
 """
 import csv
@@ -36,14 +33,12 @@ import mysql.connector
 import csvfile
 from config import * 
 
-
-myname = os.path.basename(__file__)
-
 PORT = 3306    
 DRIVER = 'mysql+mysqlconnector'
 
 Base = declarative_base()
 
+myname = os.path.basename(__file__)
 ##-----------------------------------------------------------------------------------------
 class DatabaseError(Exception):
   pass
@@ -68,6 +63,10 @@ class CveRecord(Base):
         self.vulnerable_version = vulnerable_version 
         self.patched_version = patched_version 
 
+    def rec_formatter(self): 
+        """ Return a subset of relevant cols. Useful for queries that return metadata to be filtered """
+        return {'CVE': self.CVE, 'package': self.package, 'vulnerable_version': self.vulnerable_version, 'patched_version': self.patched_version}
+
 ##-----------------------------------------------------------------------------------------
 def create_db_engine(db_args):
   """
@@ -75,6 +74,17 @@ def create_db_engine(db_args):
    Required Arg (dict): database access parameters
    Returns (obj): SqlAlchemy database "engine"    
   """
+  
+  tag = "%s.create_db_engine" % myname
+
+  if 'host' not in db_args:
+    raise DatabaseError("%s: Missing required DB parameter: [host]" % (tag))
+  if 'database' not in db_args:
+    raise DatabaseError("%s: Missing required DB parameter: [database]" % (tag))
+  if 'username' not in db_args:
+    raise DatabaseError("%s: Missing required DB parameter: [username]" % (tag))
+  if 'password' not in db_args:
+    raise DatabaseError("%s: Missing required DB parameter: [password]" % (tag))
 
   URI_PARAMS = {
     'drivername': DRIVER,
@@ -85,15 +95,15 @@ def create_db_engine(db_args):
     'database':   db_args['database']
   }
 
-  engine = create_engine(URL(**URI_PARAMS))
-  
+  engine = create_engine(URL(**URI_PARAMS), echo=False)
+ 
   return(engine)
 
 ##-----------------------------------------------------------------------------------------
 def process_db_args(db_default_configs, **kwargs):
   """
    Compiles a dict of database-access args (for creating engine), starting with passed 
-   defaults and optionally overrideing username and/or password.
+    defaults and optionally overriding username and/or password.
    Required arg (dict): default db-args 
    Optional kwargs: (username, password)
    Returns (dict): final db-config params
@@ -113,14 +123,13 @@ def create_tables(**kwargs):
    Create the "cve_records" defined by the CveRecord() model above.
    Default db-params will be read from app/config. User and password params can be overriden based on kwargs.
    Optional kwargs: (username, password)
-
    Typical usage:
-    (venv) $ python -c 'import database; database.create_tables(username="vespa_admin", password=<ADMIN-PW>)'
+    (venv) $ python -c 'import database; database.create_tables(username="vespa_admin", password="****")'
   """
   tag = "%s.create_tables" % myname
 
   db_configs = BaseConfig.STORAGE_ARGS['database']
-  db_args =  process_db_args(db_configs, **kwargs) 
+  db_args = process_db_args(db_configs, **kwargs) 
 
   engine = create_db_engine(db_args)
 
@@ -139,10 +148,7 @@ def create_session(engine):
 
   db_session = None
 
-  try:
-    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
-  except Exception as e:
-    raise
+  db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
   return(db_session)
  
@@ -154,22 +160,21 @@ def csv_to_sql(file_path, **kwargs):
    Optional kwargs: (username, password)
    Returns (int): Number of records inserted
  
-   !!! WARNING: This will overwrite the existing CVE records in the database. No support for APPEND()
+   !!! WARNING !!! This will truncate and overwrite the existing CVE records in the database
  
    Typical usage:
-    (venv) $ python -c 'import database; database.sql_to_csv(csv_file, username="vespa_rw", password="*****")'
+    (venv) $ python -c 'import database; database.sql_to_csv(csv_file, username="vespa_rw", password="***")'
   """
   
   tag = "%s.csv_to_sql" % myname
   
   db_configs = BaseConfig.STORAGE_ARGS['database']
-  db_args =  process_db_args(db_configs, **kwargs) 
+  db_args = process_db_args(db_configs, **kwargs) 
 
   ## Load CSV file contents into Pandas df
   df = csvfile.csv_to_df(file_path)
 
   engine = create_db_engine(db_args)
-  
   session = create_session(engine)
 
   tablename = CveRecord.__tablename__
@@ -204,10 +209,10 @@ def sql_to_csv(file_path, **kwargs):
    Optional kwargs: (username, password)
    Returns (int): Number of records written to file 
    
-   !!! WARNING: This will overwrite the existing CVE records in the output file (if it exists).
+   !!! WARNING !!! This will overwrite the existing CVE records in the output file (if it exists).
   
    Typical usage:
-    (venv) $ python -c 'import database; database.csv_to_sql(csv_file, username="vespa_rw", password="*****")'
+    (venv) $ python -c 'import database; database.csv_to_sql(csv_file, username="vespa_ro", password="****")'
   """
  
   tag = "%s.sql_to_csv" % myname
@@ -234,7 +239,7 @@ def sql_to_csv(file_path, **kwargs):
   ins = inspect(CveRecord)
   col_names = [c_attr.key for c_attr in ins.mapper.column_attrs]
 
-  for rm in REMOVE:
+  for rm in REMOVE: ## not all DB cols are written to CSV file
     col_names.remove(rm)
 
   with open(file_path, 'w') as f:
@@ -245,8 +250,6 @@ def sql_to_csv(file_path, **kwargs):
       l_row = object_to_dict(row,REMOVE).values()
       print(">> Writing row to file: %s" % str(l_row))
       out.writerow(l_row)
-
-  print(cve_records) 
 
 ##-----------------------------------------------------------------------------------------
 def object_to_dict(orm_record, remove=None):
@@ -268,22 +271,28 @@ def object_to_dict(orm_record, remove=None):
 ##-----------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-   
-    ## input files (relative to Vespa/app dir) 
-    csv_path_in = "csv_data/cve.csv"
-    bad_csv_path_in = "csv_data/bogus"
-
-    ## output files (relative to Vespa/app dir) 
-    csv_path_out = "csv_data/csv_new.csv"
-
-    username = "vespa_rw"
-    password = '******'
-
     table_name = CveRecord.__table__
 
+    ##----------------------
+    ## Import CSV file to DB 
+    ##----------------------
+    ## input file (relative to Vespa/app dir) 
+    csv_path_in = "csv_data/cve.csv"
+    bad_csv_path_in = "csv_data/bogus"
+#    username = "vespa_rw"
+#    password = '****'
 #    print("%s: Importing CSV data from file (%s) to database table (%s)..." % (myname, csv_path_in, table_name))
 #    out = csv_to_sql(csv_path_in, username=username, password=password)
 
+    ##------------------------------
+    ## Export DB records to CSV file 
+    ##------------------------------
+    ## output file (relative to Vespa/app dir) 
+    csv_path_out = "csv_data/csv_new.csv"
+    username = "vespa_ro"
+    password = '****'
     print("%s: Exporting CVE data from database table (%s) to file (%s)..." % (myname, table_name, csv_path_out))
     out = sql_to_csv(csv_path_out, username=username, password=password)
-  
+    print("----- %s -------" % (csv_path_out))
+    with open(csv_path_out, 'r') as f:
+      print(f.read()) 
