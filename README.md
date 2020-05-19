@@ -33,8 +33,8 @@
 ---
 ## Setup
 ```
- $ git clone https://github.com/bfanselow/Vespa.git
- $ cd Vespa/
+ $ git clone https://github.com/bfanselow/Vespa2.0.git
+ $ cd Vespa2.0/
  $ virtualenv -p python3.6 venv
  $ source venv/bin/activate
  (venv) $ pip install -r requirements.txt
