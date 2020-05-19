@@ -51,7 +51,7 @@ class BaseConfig(object):
   ## CVE-data Storage type. 
   ## See cve_data_abstraction.py for all supported types
   ##==================================
-  STORAGE_TYPE = 'csv'
+  STORAGE_TYPE = 'database'
   STORAGE_ARGS = {
     'csv': {
        'file_path': CVE_DATAFILE_PATH, 
@@ -63,7 +63,7 @@ class BaseConfig(object):
       'port': 3306,
       'database': 'vespa',
       'username': 'vespa_ro',
-      'password': '!Vespa_RO!' 
+      'password': '*****' 
     }
   }
 

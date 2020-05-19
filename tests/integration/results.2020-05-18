@@ -1,0 +1,15 @@
+============================= test session starts ==============================
+platform linux -- Python 3.6.8, pytest-5.4.2, py-1.8.1, pluggy-0.13.1 -- /home/wfanselow/Vespa2.0/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/wfanselow/Vespa2.0
+collecting ... collected 6 items
+
+tests/integration/test_routes.py::test_resource_not_found PASSED         [ 16%]
+tests/integration/test_routes.py::test_valid_data_refresh PASSED         [ 33%]
+tests/integration/test_routes.py::test_invalid_data_refresh_method PASSED [ 50%]
+tests/integration/test_routes.py::test_invalid_data_timestamp PASSED     [ 66%]
+tests/integration/test_routes.py::test_invalid_vuln_post PASSED          [ 83%]
+tests/integration/test_routes.py::test_valid_vuln_post1 PASSED           [100%]
+
+============================== 6 passed in 0.09s ===============================
+Cleaning up data-handler resources...
