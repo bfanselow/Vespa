@@ -4,7 +4,7 @@ The biggest challange in developing Vespa v1.0 was trying to determine how I wan
 
 In a production environment with a very large CVE dataset, the ideal storage for this kind of service would probably be a local (or remote) database. However, there might be some situations where a database is less than ideal (even if providing better performance).  This led to the idea of making a CVE-data access-abstraction-layer, such that the CVE data could be stored in various storage formats, without having to make any code changes to the service - updating storage-type is simply a config-file setting.  The abstraction layer allows us to use a single, common set of data-access methods regardless of storage format.
 
-Vespa v2.0 has the same basic architectureal design, but adds several new features:
- * adds  database to the available CVE data storage options, backed by a MySql (MariaDB) database
- * ETL functionality - transformations between the CSV and database formats
- * New "GET /vespa/api/v2.0/data/timestamp" resource to get last update timestamp of CVE data source
+Vespa v2.0 has the same basic architectural design, but adds several new features:
+ * Adds database to the available CVE data storage options, backed by a MySql (MariaDB) database.
+ * ETL functionality - transformations between the CSV and database formats.
+ * New "GET /vespa/api/v2.0/data/timestamp" resource to get last update timestamp of CVE data source.
