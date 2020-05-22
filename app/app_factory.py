@@ -54,7 +54,7 @@ def create_app(d_init):
 
     _register_blueprints(app)
 
-    return( app )
+    return app
 
 ##---------------------------------------------------------------------------------------
 def _init_data_storage(app):

@@ -64,7 +64,7 @@ def analyze_vulnerable_package_list(l_pvh_data, cve_dh):
           d_results[host] = [] 
         d_results[host].append( cve_id ) 
 
-  return(d_results)
+  return d_results
 
 ##--------------------------------------------------------------------------------------------
 def is_vulnerable_version(version, version_first_affected, version_first_patched):
@@ -86,7 +86,7 @@ def is_vulnerable_version(version, version_first_affected, version_first_patched
   except Exception as e:
     raise
 
-  return(is_in_window)
+  return is_in_window
 
 ##--------------------------------------------------------------------------------------------
 if __name__ == '__main__':

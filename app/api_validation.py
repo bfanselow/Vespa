@@ -57,6 +57,6 @@ def api_data_validate(d_json_schema):
         raise
  
       ret = func(*args, **kwargs)
-      return( ret )
+      return ret 
     return wrapper
   return data_validate 

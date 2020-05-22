@@ -57,7 +57,7 @@ def check_vuln():
   d_result = cve_analysis.analyze_vulnerable_package_list(l_pvh_data, capp.cve_dh)  
  
   result = jsonify(d_result)
-  return(result)
+  return result
 
 ##---------------------------------------------------------------------------------------
 ## GET request to identify timestamp of last CVE storage update 
@@ -76,7 +76,7 @@ def data_timestamp():
   timestamp = dh.data_timestamp()
   d_result = {'storage_type': storage_type, 'last_update': timestamp} 
   result = jsonify(d_result)
-  return(result)
+  return result
 
 ##---------------------------------------------------------------------------------------
 ## GET request to refresh data source 
@@ -95,6 +95,6 @@ def data_refresh():
   status = dh.refresh_storage()
   d_result = {'status': status} 
   result = jsonify(d_result)
-  return(result)
+  return result
 
 ##---------------------------------------------------------------------------------------

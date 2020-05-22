@@ -45,7 +45,7 @@ def csv_to_df(file_path):
     if any(df[col].isnull()):
       raise CsvFileError("%s: Missing required column: [%s]" % (tag, col))
 
-  return(df)
+  return df
  
 ##-----------------------------------------------------------------------------------------
 def file_timestamp(file_path):
@@ -65,7 +65,7 @@ def file_timestamp(file_path):
   last_modified = path.stat().st_mtime
   dt_last_mod = datetime.datetime.fromtimestamp(last_modified)
 
-  return( dt_last_mod )
+  return dt_last_mod
  
 ##-----------------------------------------------------------------------------------------
 if __name__ == '__main__':

@@ -29,6 +29,6 @@ def reset_log_filter(source_ip):
     ## Reset custom formatting filter
 
     log_filter = CustomContextFilter({'source_ip': source_ip})
-    return(log_filter)
+    return log_filter
 
 ##----------------------------------------------------------------------------

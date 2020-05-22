@@ -66,7 +66,7 @@ class CveRecord(Base):
     @classmethod
     def records_for_package(cls, session, package):
         """ Retrieve records for a "package". Example: records=CveRecord.records_for_package(session, 'flash') """
-        return( session.query(cls).filter_by(package=package).all() ) 
+        return session.query(cls).filter_by(package=package).all()
 
     def rec_formatter(self): 
         """ Return a subset of relevant cols. Useful for queries that return metadata to be filtered """
@@ -102,7 +102,7 @@ def create_db_engine(db_args):
 
   engine = create_engine(URL(**URI_PARAMS), echo=False)
  
-  return(engine)
+  return engine
 
 ##-----------------------------------------------------------------------------------------
 def process_db_args(db_default_configs, **kwargs):
@@ -120,7 +120,7 @@ def process_db_args(db_default_configs, **kwargs):
   if 'password' in kwargs:
     db_args['password'] = kwargs['password'] 
 
-  return( db_args )
+  return db_args
 
 ##-----------------------------------------------------------------------------------------
 def create_tables(**kwargs):
@@ -155,7 +155,7 @@ def create_session(engine):
 
   db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
-  return(db_session)
+  return db_session
  
 ##-----------------------------------------------------------------------------------------
 def csv_to_sql(file_path, **kwargs):
@@ -204,7 +204,7 @@ def csv_to_sql(file_path, **kwargs):
   if file_row_count != db_row_count:
     raise DatabaseError("%s: Failed to load all (%d) records from file" % (file_row_count)) 
 
-  return(db_row_count)
+  return db_row_count
 
 ##-----------------------------------------------------------------------------------------
 def sql_to_csv(file_path, **kwargs):
@@ -271,7 +271,7 @@ def object_to_dict(orm_record, remove=None):
     for rm in remove:
       d_row.pop(rm, None)
 
-  return(d_row)
+  return d_row
  
 ##-----------------------------------------------------------------------------------------
 if __name__ == '__main__':

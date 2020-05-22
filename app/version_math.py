@@ -56,11 +56,11 @@ def is_version_in_window(version, version_lo, version_hi):
       raise VersionError("%s: Invalid input versions - version_lo (%s) must be leass than version_hi (%s)" % (myname, version_lo,version_hi)) 
 
     if parse_version(version) < parse_version(version_lo):    ## is version <= version_lo? - NOT in window 
-        return( False )
+        return False
     elif parse_version(version) >= parse_version(version_hi): ## is version >= version_hi? - NOT in window 
-        return( False )
+        return False
     else: ## we must be in window
-        return( True )
+        return True
 
 ##--------------------------------------------------------------------------------------------
 if __name__ == '__main__':

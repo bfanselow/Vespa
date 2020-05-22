@@ -49,7 +49,7 @@ def error_response(e):
   etype = e.__class__.__name__ 
   code = getattr(e, 'code', 500) 
   d_response = {'timestamp': gmtime_now, 'exception': etype, 'message':str(e)}
-  return(d_response)
+  return d_response
 
 ##---------------------------------------------------------------------------------------
 @app.before_request  

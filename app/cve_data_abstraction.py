@@ -82,7 +82,7 @@ def create_cve_dh(storage_type, d_args):
   ## instantiate
   cve_dh = dh_class(d_args)
    
-  return(cve_dh) 
+  return cve_dh
 
 ##----------------------------------------------------------------------------------------------
 class CveStorageError(Exception):
@@ -211,7 +211,7 @@ class CveDH_CSV(CveDH):
       ts_elapsed = ts_2 - ts_1
       self.log('INFO', "%s: Data-file read elapsed time (secs): %s" % (tag, round(ts_elapsed,2)))
 
-    return(status)
+    return status
 
   ##---------------------------------------------------- 
   def refresh_storage(self):
@@ -228,7 +228,7 @@ class CveDH_CSV(CveDH):
     except Exception as e:
       self.log('ERROR', "%s: self.initialize_storage() failed with exception: %s" % (tag, e))
       raise
-    return(status)
+    return status
 
   ##---------------------------------------------------- 
   def data_timestamp(self):
@@ -247,7 +247,7 @@ class CveDH_CSV(CveDH):
       
     ts_last_mod = dt_last_mod.strftime(TIMESTAMP_FORMAT)
 
-    return( ts_last_mod )
+    return ts_last_mod
 
   ##---------------------------------------------------- 
   def get_cve_data_for_package(self, package_name):
@@ -277,7 +277,7 @@ class CveDH_CSV(CveDH):
     if not self.persist:  ## Drop the in-mem data
       self.data = None
 
-    return(l_package_data)
+    return l_package_data
 
   ##---------------------------------------------------- 
   def resource_cleanup(self):
@@ -360,7 +360,7 @@ class CveDH_Database(CveDH):
     
     self.log("INFO", "%s: CVE records in database: (%d)" % (tag, count))
 
-    return( status )
+    return status
 
   ##---------------------------------------------------- 
   def refresh_storage(self):
@@ -383,7 +383,7 @@ class CveDH_Database(CveDH):
       self.log("ERROR", "%s: initialize_storage() failed with exception: %s" % (tag,e))
       raise
 
-    return( status )
+    return status
 
   ##---------------------------------------------------- 
   def data_timestamp(self):
@@ -399,7 +399,7 @@ class CveDH_Database(CveDH):
     dt_last_insert = cve_record[0]
     ts_last_insert = dt_last_insert.strftime(TIMESTAMP_FORMAT)
 
-    return( ts_last_insert  )
+    return ts_last_insert
 
   ##---------------------------------------------------- 
   def resource_cleanup(self):
@@ -430,7 +430,7 @@ class CveDH_Database(CveDH):
     ## rec_formatter() gives us a dict representation of specific cols in record
     cve_records = [record.rec_formatter() for record in result]
 
-    return(cve_records)
+    return cve_records
 
  
 ##----------------------------------------------------------------------------------------------
