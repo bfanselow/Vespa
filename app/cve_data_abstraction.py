@@ -422,7 +422,8 @@ class CveDH_Database(CveDH):
     tag = "%s.get_cve_data_for_package" % (self.cname) 
     self.log("DEBUG", "%s: Querying CVE database for package=[%s]..." % (tag, package_name))
 
-    result = self.session.query(database.CveRecord).filter_by(package=package_name).all() 
+    ## Use custom @classmethod query defined in model to retrieve matching records
+    result = database.CveRecord.records_for_package(self.session, package_name) 
 
     self.session.close()
 
@@ -454,9 +455,9 @@ if __name__ == '__main__':
   ## Test database
   if len(sys.argv) > 1:
     if sys.argv[1] == 'database':
-      from config import BaseConfig
+      from config import DevelopmentConfig
       storage_type = 'database'
-      d_args = BaseConfig.STORAGE_ARGS[storage_type]
+      d_args = DevelopmentConfig.STORAGE_ARGS[storage_type]
  
   print("Creating CVE-access--handler for storage-type: [%s]" % (storage_type))
   cve_dh = create_cve_dh(storage_type, d_args) 

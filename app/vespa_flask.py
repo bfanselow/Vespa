@@ -22,6 +22,9 @@ BASE_DIR = os.environ.get('BASE_DIR', None) ## set in *.wsgi
 if not BASE_DIR:
   BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+default_env = 'test'
+FLASK_ENV = os.environ.get('FLASK_ENV', default_env) ## set in *.wsgi
+
 ## Custom modules 
 import app_factory
 import CustomLogging
@@ -34,7 +37,7 @@ DEBUG = 1
 ## Create the Flask app instance from the app_factory
 d_init = {
   'DEBUG': DEBUG,
-  'config_class': TestingConfig
+  'environment': FLASK_ENV 
 }
 app = app_factory.create_app(d_init)
 

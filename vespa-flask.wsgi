@@ -44,8 +44,11 @@ import os
 ## Set location of the <flask-app>.py directory (does not have to be current dir)
 BASE_DIR = '/home/wfanselow/Vespa/app'
 
+## Set app environment (primarily effects config settings)
+FLASK_ENV = 'test' ## others [ 'production', 'development' ]
+
 ## Set some app environment vars
-os.environ['FLASK_ENV'] = 'development'
+os.environ['FLASK_ENV'] = FLASK_ENV 
 os.environ['BASE_DIR'] = BASE_DIR 
 
 ## Put path to jdwe_flask.py on top of python path so it is found.

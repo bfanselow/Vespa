@@ -19,8 +19,13 @@ import CustomLogging
 from blueprints.api.routes import bp_api
 ## Future versions UI: from blueprints.ui.routes import bp_ui
 
-
 DEBUG = 0
+
+config_by_env = {
+  'test':        TestingConfig,
+  'development': DevelopmentConfig,
+  'production':  ProductionConfig
+}
 
 ##---------------------------------------------------------------------------------------
 def create_app(d_init):
@@ -35,8 +40,8 @@ def create_app(d_init):
   app.url_map.strict_slashes = False
 
   ## load app configurations 
-  ConfigClass = d_init.get('config_class', DevelopmentConfig)
-  _load_configs(app, ConfigClass)
+  env = d_init.get('FLASK_ENV', 'test')
+  _load_configs(app, env)
 
   ## set-up logging
   _setup_logging(app) 
@@ -72,9 +77,12 @@ def _init_data_storage(app):
   app.cve_dh = cve_dh
  
 ##---------------------------------------------------------------------------------------
-def _load_configs(app, ConfigClass):
-  """Load app configuration settings"""
-  print("Loading configs...")
+def _load_configs(app, env):
+  """Load app configuration settings based on env(ironment) """
+  print("Loading configs for environment=[%s]" % (env))
+
+  ConfigClass = config_by_env.get(env,'test')
+
   app.config.from_object(ConfigClass)
   if DEBUG > 2:
     app.debug = True 

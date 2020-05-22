@@ -63,6 +63,11 @@ class CveRecord(Base):
         self.vulnerable_version = vulnerable_version 
         self.patched_version = patched_version 
 
+    @classmethod
+    def records_for_package(cls, session, package):
+        """ Retrieve records for a "package". Example: records=CveRecord.records_for_package(session, 'flash') """
+        return( session.query(cls).filter_by(package=package).all() ) 
+
     def rec_formatter(self): 
         """ Return a subset of relevant cols. Useful for queries that return metadata to be filtered """
         return {'CVE': self.CVE, 'package': self.package, 'vulnerable_version': self.vulnerable_version, 'patched_version': self.patched_version}
@@ -128,7 +133,7 @@ def create_tables(**kwargs):
   """
   tag = "%s.create_tables" % myname
 
-  db_configs = BaseConfig.STORAGE_ARGS['database']
+  db_configs = DevelopmentConfig.STORAGE_ARGS['database']
   db_args = process_db_args(db_configs, **kwargs) 
 
   engine = create_db_engine(db_args)
@@ -168,7 +173,7 @@ def csv_to_sql(file_path, **kwargs):
   
   tag = "%s.csv_to_sql" % myname
   
-  db_configs = BaseConfig.STORAGE_ARGS['database']
+  db_configs = DevelopmentConfig.STORAGE_ARGS['database']
   db_args = process_db_args(db_configs, **kwargs) 
 
   ## Load CSV file contents into Pandas df
@@ -220,7 +225,7 @@ def sql_to_csv(file_path, **kwargs):
   ## We remove these columns/values from the database records before writing to file
   REMOVE = ['id', 'ts_inserted']
  
-  db_configs = BaseConfig.STORAGE_ARGS['database']
+  db_configs = DevelopmentConfig.STORAGE_ARGS['database']
   db_args =  process_db_args(db_configs, **kwargs) 
 
   engine = create_db_engine(db_args)
