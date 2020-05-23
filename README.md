@@ -109,7 +109,7 @@ Run this for both config.STORAGE_TYPE settings: **csv** and **database**
 ## VESPA Details
 
 #### Process Flow Summary
-The *VESPA* Flask app routing engine passes the Posted "package-version-host" list payload to **cve_analysis.analyze_vulnerable_package_list()** along with a CVE-data-access object.  For each "package-version-host" object in the list, the package's CVE records are retrieved from the data-access object. The input package's version is compared to the affected-versions for that package by methods in **version_math.py**. If the package version is found to be affected, the assocated CVE information is added to a response object of all affected packages from the input payload list.  This object is returned as a JSON by the Flask app. 
+The *VESPA* Flask app routing engine passes the Posted "package-version-host" list payload to **cve_analysis.analyze_vulnerable_package_list()** along with a CVE-data-access object.  For each "package-version-host" object in the list, the package's CVE records are retrieved from the data-access object. The input package's version is compared to the affected-versions for that package by methods in **version_math.py**. If the package version is found to be affected, the associated CVE information is added to a response object of all affected packages from the input payload list.  This object is returned as a JSON by the Flask app. 
 
 #### Storage formats
 *VESPA* currently supports multiple different CVE data storage formats:
