@@ -14,9 +14,9 @@
      ...
      d_pgk_data = CveDH_<type>.get_cve_data_for_package(package_name)
 
-   Using a storage-absraction-layer gives us the flexibility to store CVE data in
+   Using a storage-abstraction-layer gives us the flexibility to store CVE data in
    different storage formats (CSV-file, YAML, database, remote-API, etc.) and access
-   this data with a single common access methods independent of the format. 
+   this data with a single set of common access methods independent of the format. 
    It also gives flexibility on how we load and query the data.  For example, if the
    CVE data is stored in a local csv file, there are a couple of options for how we 
     read/query the data.
