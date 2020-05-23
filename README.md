@@ -172,7 +172,7 @@ This method does require an API-KEY (set in Flask config) to be passed in the re
 
 **Example request with the API-key:** 
 ```
- $ /usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H "X-Api-Key: William.Fanselow.Vespa.1.0"
+ $ /usr/bin/curl -s http://127.0.0.1:8080/vespa/api/v2.0/data/refresh -H "X-Api-Key: William.Fanselow.Vespa.2.0"
 {"status":true}
 ```
 
