@@ -9,7 +9,7 @@ jsonschema==3.2.0
 MarkupSafe==1.1.1
 more-itertools==8.2.0
 mysql-connector-python==8.0.20
-numpy==1.19
+numpy==1.22
 packaging==20.3
 pandas==1.0.3
 pluggy==0.13.1
